@@ -1,0 +1,198 @@
+{
+  "vm1_output.wav": {
+    "audio_file": "test_samples/vm1_output.wav",
+    "drop_timestamp": 10.6,
+    "confidence": 0.8,
+    "method": "beep",
+    "reasoning": "Beep detected at 10.40s (conf: 0.80)",
+    "detected_signals": {
+      "beep": {
+        "detected": true,
+        "timestamp": 10.4,
+        "confidence": 0.8,
+        "frequency": 745.0,
+        "all_candidates": 1
+      },
+      "speech": {
+        "greeting_ended": true,
+        "timestamp": 4.8,
+        "confidence": 0.95,
+        "phrase": "leave your message",
+        "transcript": "Please Please leave your message for Please leave your message for 6 09. Please leave your message for 609686. Please leave your message for 609686793.",
+        "all_signals": 1
+      },
+      "silence": {
+        "final_duration": 0.0,
+        "speech_detected": true
+      }
+    }
+  },
+  "vm2_output.wav": {
+    "audio_file": "test_samples/vm2_output.wav",
+    "drop_timestamp": 12.1,
+    "confidence": 0.6,
+    "method": "silence",
+    "reasoning": "Very long silence (3.0s) - likely safe to drop",
+    "detected_signals": {
+      "beep": {
+        "detected": false,
+        "timestamp": null,
+        "confidence": 0.0,
+        "frequency": null,
+        "all_candidates": 0
+      },
+      "speech": {
+        "greeting_ended": true,
+        "timestamp": 4.5,
+        "confidence": 0.75,
+        "phrase": "multiple indicators",
+        "transcript": "Your call has been forwarded. Your call has been forwarded to voice mail. The person you're Your call has been forwarded to voice mail. The person you're trying to reach is not available. Your call has been forwarded to voice mail. The person you're trying to reach is not available. At the tone, please record. Your call has been forwarded to voice mail. The person you're trying to reach is not available. At the tone, please record your message. When you have Your call has been forwarded to voice mail. The person you're trying to reach is not available. At the tone, please record your message. When you have finished recording, you may hang up.",
+        "all_signals": 1
+      },
+      "silence": {
+        "final_duration": 3.0,
+        "speech_detected": true
+      }
+    }
+  },
+  "vm3_output.wav": {
+    "audio_file": "test_samples/vm3_output.wav",
+    "drop_timestamp": 12.7,
+    "confidence": 0.6,
+    "method": "silence",
+    "reasoning": "Very long silence (3.0s) - likely safe to drop",
+    "detected_signals": {
+      "beep": {
+        "detected": false,
+        "timestamp": null,
+        "confidence": 0.0,
+        "frequency": null,
+        "all_candidates": 0
+      },
+      "speech": {
+        "greeting_ended": true,
+        "timestamp": 7.5,
+        "confidence": 0.75,
+        "phrase": "multiple indicators",
+        "transcript": "Your call has been forwarded Your call has been forwarded to the voice mail for Sahil Singla. Your call has been forwarded to the voicemail for Sahil Singla. No one is available. Your call has been forwarded to the voicemail for Sahil Singla. No one is available to take your call. Please Your call has been forwarded to the voicemail for Sahil Singla. No one is available to take your call. Please record your message. Your call has been forwarded to the voicemail for Sahil Singla. No one is available to take your call. Please record your message. When you've finished recording Your call has been forwarded to the voicemail for Sahil Singla. No one is available to take your call. Please record your message. When you've finished recording, you may hang up.",
+        "all_signals": 1
+      },
+      "silence": {
+        "final_duration": 3.0,
+        "speech_detected": true
+      }
+    }
+  },
+  "vm4_output.wav": {
+    "audio_file": "test_samples/vm4_output.wav",
+    "drop_timestamp": 6.5,
+    "confidence": 0.72,
+    "method": "silence",
+    "reasoning": "Extended silence (1.5s) after speech detected",
+    "detected_signals": {
+      "beep": {
+        "detected": false,
+        "timestamp": null,
+        "confidence": 0.0,
+        "frequency": null,
+        "all_candidates": 0
+      },
+      "speech": {
+        "greeting_ended": false,
+        "timestamp": null,
+        "confidence": 0.0,
+        "phrase": null,
+        "transcript": "Hi. If you record your Hi. If you record your name and reason for calling. Hi. If you record your name and reason for calling, I'll see if this person is Hi. If you record your name and reason for calling, I'll see if this person is available.",
+        "all_signals": 0
+      },
+      "silence": {
+        "final_duration": 1.5,
+        "speech_detected": true
+      }
+    }
+  },
+  "vm5_output.wav": {
+    "audio_file": "test_samples/vm5_output.wav",
+    "drop_timestamp": 17.5,
+    "confidence": 0.6,
+    "method": "silence",
+    "reasoning": "Very long silence (3.0s) - likely safe to drop",
+    "detected_signals": {
+      "beep": {
+        "detected": false,
+        "timestamp": null,
+        "confidence": 0.0,
+        "frequency": null,
+        "all_candidates": 0
+      },
+      "speech": {
+        "greeting_ended": true,
+        "timestamp": 13.5,
+        "confidence": 0.7,
+        "phrase": "thank you",
+        "transcript": "Hi. Hi. You can check through store. Hi. You're from Jameson's store. 556548. Hi. You're from Jameson's store. 5565484. And our address Hi. You can check 645565484. And our agents at the phone at the line, Hi. You can check 645565484. And I'll able to fix the phone at the moment. Give me your name, your callback number. Hi. You're from Jenkins. 4556 5484. And you are able to fix the phone at the moment. You'll be your name, your callback number, and a brief message. Hi. You're from James Street Store. 5 565484. And you are able to fix the phone at the moment. You'll be your name, your callback number, and a brief message. I'll do my best to tell your call. Hi. You're from James Street Store. 5 565484. And I'm able to fix the phone at the moment. You'll be your name, your callback number, and a brief message. I'll do my best to tell you a call as soon as possible. Thank you. Have Hi. You're from James Street Store. 5 565484. And you are able to take the phone at the moment, give me your name, your callback number, and a brief message. I'll do my best to tell you a call as soon as possible. Thank you. Have a blessed day. Bye bye. Hi. You've been checking through the store. 5565484. And if I ever fix the phone at the moment, you'll be your name, your callback number, and a brief message. I'll do my best to tell you a call as soon as possible. Thank you, and have a blessed day. Bye bye.",
+        "all_signals": 1
+      },
+      "silence": {
+        "final_duration": 3.0,
+        "speech_detected": true
+      }
+    }
+  },
+  "vm6_output.wav": {
+    "audio_file": "test_samples/vm6_output.wav",
+    "drop_timestamp": 4.9,
+    "confidence": 0.7637499999999999,
+    "method": "speech",
+    "reasoning": "Greeting ended at 3.00s, 0.9s silence (conf: 0.95)",
+    "detected_signals": {
+      "beep": {
+        "detected": false,
+        "timestamp": null,
+        "confidence": 0.0,
+        "frequency": null,
+        "all_candidates": 0
+      },
+      "speech": {
+        "greeting_ended": true,
+        "timestamp": 3.0,
+        "confidence": 0.95,
+        "phrase": "leave a message",
+        "transcript": "Hey. Sorry I missed your Hey. Sorry I missed you. I just leave a message. Hey, sir. I missed you. Just leave a message, and I will call you back.",
+        "all_signals": 1
+      },
+      "silence": {
+        "final_duration": 0.9000000000000004,
+        "speech_detected": true
+      }
+    }
+  },
+  "vm7_output.wav": {
+    "audio_file": "test_samples/vm7_output.wav",
+    "drop_timestamp": 11.9,
+    "confidence": 0.9,
+    "method": "beep",
+    "reasoning": "Beep detected at 11.70s (conf: 0.90)",
+    "detected_signals": {
+      "beep": {
+        "detected": true,
+        "timestamp": 11.7,
+        "confidence": 0.9,
+        "frequency": 880.0,
+        "all_candidates": 1
+      },
+      "speech": {
+        "greeting_ended": true,
+        "timestamp": 7.5,
+        "confidence": 0.75,
+        "phrase": "multiple indicators",
+        "transcript": "Hi, and thank you for Hi, and thank you for calling. You've reached Hi, and thank you for calling. You've reached Tiffany. I'm sorry. I'm not Hi, and thank you for calling. You've reached Tiffany. I'm sorry I'm not available to take your call, but if you Hi, and thank you for calling. You've reached Tiffany. I'm sorry I'm not available to take your call, but if you leave your name and your number, I shall Hi, and thank you for calling. You've reached Tiffany. I'm sorry I'm not available to take your call. But if you leave your name and your number, I shall return your call at my earliest Hi, and thank you for calling. You've reached Tiffany. I'm sorry I'm not available to take your call. But if you leave your name and your number, I shall return your call at my earliest convenience. You have a good",
+        "all_signals": 1
+      },
+      "silence": {
+        "final_duration": 0.0,
+        "speech_detected": true
+      }
+    }
+  }
+}
