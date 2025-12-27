@@ -1,4 +1,11 @@
-numpy
-soundfile
-librosa
-scipy
+numpy==1.24.3
+scipy==1.11.3
+librosa==0.10.1
+soundfile==0.12.1
+openai>=1.12.0
+httpx>=0.24.0
+python-dotenv==1.0.0
+pydub==0.25.1
+matplotlib==3.8.0
+requests==2.31.0
+deepgram-sdk>=3.0.0

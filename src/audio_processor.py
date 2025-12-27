@@ -1,76 +1,90 @@
-"""Audio loading and chunked streaming utilities."""
-
-from __future__ import annotations
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Generator
+"""
+Audio Processor - Handles streaming and chunking of audio files
+"""
 import numpy as np
+import librosa
 import soundfile as sf
+from typing import Generator, Tuple
 
 
-@dataclass
-class AudioChunk:
-    """Single chunk of mono audio."""
-    samples: np.ndarray
-    sample_rate: int
-    timestamp: float
-    duration: float
-    index: int
-
-
-class AudioStreamer:
-    def __init__(self, chunk_size_ms: int = 250, target_sample_rate: int = 16000):
-        self.chunk_size_ms = int(chunk_size_ms)
-        self.target_sample_rate = int(target_sample_rate)
-        self._audio = None
-        self._sample_rate = None
-
-    @property
-    def sample_rate(self) -> int:
-        if self._sample_rate is None:
-            raise RuntimeError("No audio loaded")
-        return self._sample_rate
-
-    @property
-    def duration(self) -> float:
-        if self._audio is None or self._sample_rate is None:
-            return 0.0
-        return len(self._audio) / float(self._sample_rate)
-
-    def load_file(self, path: str | Path) -> None:
-        path = Path(path)
-        data, sr = sf.read(path, always_2d=True)
-        mono = data.mean(axis=1).astype(np.float32)
-
-        if sr != self.target_sample_rate:
-            import librosa
-            mono = librosa.resample(mono, orig_sr=sr, target_sr=self.target_sample_rate)
-            self._sample_rate = self.target_sample_rate
-        else:
-            self._sample_rate = sr
-
-        self._audio = mono
-
-    def stream(self) -> Generator[AudioChunk, None, None]:
-        if self._audio is None or self._sample_rate is None:
-            raise RuntimeError("Audio not loaded")
-
-        hop = int(self.sample_rate * self.chunk_size_ms / 1000.0)
-        total = len(self._audio)
-        idx = 0
-        chunk_index = 0
-
-        while idx < total:
-            end = min(idx + hop, total)
-            samples = self._audio[idx:end]
-            timestamp = idx / float(self.sample_rate)
-            duration = len(samples) / float(self.sample_rate)
-            yield AudioChunk(
-                samples=samples,
-                sample_rate=self.sample_rate,
-                timestamp=timestamp,
-                duration=duration,
-                index=chunk_index,
-            )
-            idx = end
-            chunk_index += 1
+class AudioProcessor:
+    def __init__(self, chunk_duration_ms: int = 100):
+        """
+        Initialize audio processor
+        
+        Args:
+            chunk_duration_ms: Duration of each audio chunk in milliseconds
+        """
+        self.chunk_duration_ms = chunk_duration_ms
+    
+    def load_audio(self, file_path: str) -> Tuple[np.ndarray, int]:
+        """
+        Load audio file
+        
+        Args:
+            file_path: Path to audio file
+            
+        Returns:
+            Tuple of (audio_data, sample_rate)
+        """
+        try:
+            audio, sr = librosa.load(file_path, sr=None, mono=True)
+            return audio, sr
+        except Exception as e:
+            print(f"Error loading audio file {file_path}: {e}")
+            raise
+    
+    def stream_audio(self, file_path: str) -> Generator[Tuple[float, np.ndarray, int], None, None]:
+        """
+        Simulate real-time audio streaming by yielding chunks
+        
+        Args:
+            file_path: Path to audio file
+            
+        Yields:
+            Tuple of (timestamp, audio_chunk, sample_rate)
+        """
+        audio, sr = self.load_audio(file_path)
+        
+        # Calculate samples per chunk
+        samples_per_chunk = int((self.chunk_duration_ms / 1000.0) * sr)
+        
+        # Stream audio in chunks
+        total_samples = len(audio)
+        current_sample = 0
+        
+        while current_sample < total_samples:
+            # Extract chunk
+            end_sample = min(current_sample + samples_per_chunk, total_samples)
+            chunk = audio[current_sample:end_sample]
+            
+            # Calculate timestamp
+            timestamp = current_sample / sr
+            
+            yield timestamp, chunk, sr
+            
+            current_sample = end_sample
+    
+    def get_audio_duration(self, file_path: str) -> float:
+        """
+        Get total duration of audio file
+        
+        Args:
+            file_path: Path to audio file
+            
+        Returns:
+            Duration in seconds
+        """
+        audio, sr = self.load_audio(file_path)
+        return len(audio) / sr
+    
+    def save_audio(self, audio: np.ndarray, sr: int, output_path: str):
+        """
+        Save audio to file
+        
+        Args:
+            audio: Audio data
+            sr: Sample rate
+            output_path: Output file path
+        """
+        sf.write(output_path, audio, sr)

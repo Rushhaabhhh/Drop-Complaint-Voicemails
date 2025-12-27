@@ -1,62 +1,79 @@
-"""Energy-based silence detector."""
-
-from __future__ import annotations
-from dataclasses import dataclass
+"""
+Silence Detector - Detects silence periods in audio
+"""
 import numpy as np
-from audio_processor import AudioChunk
-
-
-@dataclass
-class SilenceAnalysis:
-    is_silent: bool
-    energy_db: float
-    consecutive_silence_sec: float
-    confidence: float
+from typing import Optional
 
 
 class SilenceDetector:
-    def __init__(self, threshold_db: float = -40.0, min_silence_sec: float = 1.0, ref_rms: float = 1.0):
-        self.threshold_db = float(threshold_db)
-        self.min_silence_sec = float(min_silence_sec)
-        self.ref_rms = float(ref_rms)
-        self._consecutive_silence_sec: float = 0.0
-
-    @staticmethod
-    def _rms(samples: np.ndarray) -> float:
-        if len(samples) == 0:
-            return 0.0
-        return float(np.sqrt(np.mean(np.square(samples), dtype=np.float64)))
-
-    def _to_db(self, rms: float) -> float:
-        if rms <= 0:
-            return -120.0
-        return 20.0 * np.log10(rms / self.ref_rms)
-
-    def reset(self) -> None:
-        self._consecutive_silence_sec = 0.0
-
-    def process_chunk(self, chunk: AudioChunk) -> SilenceAnalysis:
-        rms = self._rms(chunk.samples)
-        energy_db = self._to_db(rms)
-        is_silent = energy_db < self.threshold_db
-
+    def __init__(
+        self,
+        silence_threshold: float = 0.015,  # Slightly more sensitive
+        min_silence_duration: float = 0.4   # Reduced from 0.5
+    ):
+        """
+        Initialize silence detector
+        
+        Args:
+            silence_threshold: RMS threshold below which audio is considered silent
+            min_silence_duration: Minimum duration of silence to be significant (seconds)
+        """
+        self.silence_threshold = silence_threshold
+        self.min_silence_duration = min_silence_duration
+        
+        # Track silence state
+        self.silence_start = None
+        self.current_silence_duration = 0.0
+        self.last_speech_time = 0.0
+        
+    def analyze_chunk(
+        self,
+        audio_chunk: np.ndarray,
+        timestamp: float
+    ) -> dict:
+        """
+        Analyze audio chunk for silence
+        
+        Args:
+            audio_chunk: Audio data chunk
+            timestamp: Current timestamp
+            
+        Returns:
+            Dictionary with silence information
+        """
+        # Calculate RMS (Root Mean Square) amplitude
+        rms = np.sqrt(np.mean(audio_chunk ** 2))
+        
+        is_silent = rms < self.silence_threshold
+        
         if is_silent:
-            self._consecutive_silence_sec += chunk.duration
+            if self.silence_start is None:
+                self.silence_start = timestamp
+            
+            self.current_silence_duration = timestamp - self.silence_start
         else:
-            self._consecutive_silence_sec = 0.0
-
-        if energy_db < self.threshold_db:
-            diff = min(abs(energy_db - self.threshold_db), 40.0)
-            confidence = diff / 40.0
-        else:
-            confidence = 0.0
-
-        return SilenceAnalysis(
-            is_silent=is_silent,
-            energy_db=energy_db,
-            consecutive_silence_sec=self._consecutive_silence_sec,
-            confidence=confidence,
-        )
-
-    def is_definitely_silent(self) -> bool:
-        return self._consecutive_silence_sec >= self.min_silence_sec
+            # Speech detected
+            self.last_speech_time = timestamp
+            self.silence_start = None
+            self.current_silence_duration = 0.0
+        
+        return {
+            'is_silent': is_silent,
+            'rms': rms,
+            'silence_duration': self.current_silence_duration,
+            'time_since_last_speech': timestamp - self.last_speech_time if self.last_speech_time > 0 else 0
+        }
+    
+    def has_significant_silence(self) -> bool:
+        """Check if current silence duration exceeds minimum threshold"""
+        return self.current_silence_duration >= self.min_silence_duration
+    
+    def get_silence_duration(self) -> float:
+        """Get current silence duration"""
+        return self.current_silence_duration
+    
+    def reset(self):
+        """Reset detector state"""
+        self.silence_start = None
+        self.current_silence_duration = 0.0
+        self.last_speech_time = 0.0
