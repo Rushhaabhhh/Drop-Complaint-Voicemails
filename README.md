@@ -1,7 +1,9 @@
-# Compliant Voicemail Drop System
+# Drop Compliant Voicemail System
 
-**Real-time voicemail detection using multi-signal analysis (STT + Beep + Silence)**  
-> Detects optimal message drop timing for TCPA compliance using Deepgram STT, FFT beep detection, and silence monitoring.
+## Project Summary
+Drop Compliant Voicemail System automatically detects voicemail greeting endings for TCPA-compliant message drops. Uses multi-signal analysis: Deepgram STT recognizes "leave a message" phrases, FFT detects 745-880Hz beeps, and silence monitoring confirms quiet periods. Processes 100ms audio chunks with priority logic (beep > speech + silence > extended silence > 20s timeout). Delivers precise drop timestamps, confidence scores, and audit-ready JSON reports for telemarketing and lead automation.
+
+## 📱 Demo Video : https://www.loom.com/share/196d5e66202343adb4c09ffbf2e6ff82
 
 ## 🚀 Quick Start
 
@@ -153,8 +155,3 @@ vm7_output.wav                 11.90s       BEEP         0.90
 - Short greetings (3s) to long greetings (13s)
 - Various phrasing styles
 - Silence-only scenarios
-
-## 📱 Demo Video
-
-**[Watch Demo Video Here]**  
-*Replace with your actual demo video link showing real-time processing*
